@@ -1,0 +1,348 @@
+﻿@model List<ToyShop.Models.Product>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Trang chủ</title>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Design/content.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Design/fontawesome-free-6.4.0-web/fontawesome-free-6.4.0-web/css/all.min.css"><!--thư viện icon -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js" integrity="sha512-WMEKGZ7L5LWgaPeJtw9MBM4i5w5OSBlSjTjCtSnvFJGSVD26gE5+Td12qN5pvWXhuWaWcVwF++F7aqu9cvqP0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js" integrity="sha512-xq+Vm8jC94ynOikewaQXMEkJIOBp7iArs3IhFWSWdRT3Pq8wFz46p+ZDFAR7kHnSFf+zUv52B3prRYnbDRdgog==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<!-- java header khi kéo xuống -->
+<script src="https://code.jquery.com/jquery-3.6.4.js"></script>
+<script>
+    $(document).ready(function () {
+        $(window).scroll(function () {
+            if ($(this).scrollTop()) {
+                $('#nav-menu').addClass('sticky');
+            } else {
+                $('#nav-menu').removeClass('sticky');
+            }
+        })
+    })
+</script>
+<!-- java header khi kéo xuống của nút lên đầu -->
+<script>
+    $(document).ready(function () {
+        $('#top').hide(); // Ẩn phần tử khi trang được tải lần đầu
+
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 300) { // Điều kiện có thể thay đổi tùy thuộc vào vị trí muốn hiển thị #top
+                $('#top').fadeIn();
+            }
+            else {
+                $('#top').fadeOut();
+            }
+        });
+    });
+</script>
+
+@{
+    var userName = Context.Request.Cookies["auth"];
+    var Role = Context.Request.Cookies["role"];
+}
+
+<body>
+    <a href="#T">
+        <i id="top" class="fa-solid fa-chevron-down fa-rotate-180 fa-2xl" style="color: white;"></i>
+    </a>
+
+    <!-- Menu -->
+    <h2 id="T" style="margin-bottom: 0;"></h2>
+    <div id="nav-menu">
+        <a href="/Admin/Home/Index">
+            <img src="~/Design/Image/Logo.png">
+        </a>
+        <ul id="font-nav-menu">
+            <li><a href="/Admin/Home/Index">Trang chủ</a></li>
+            <li>
+                <a href="#">Thương hiệu</a>
+                <ul id="sub_menu">
+                    @foreach (var n in @ViewBag.Br)
+                    {
+                        <li><a href="/Admin/Home/DSSP?brandId=@n.BrandId">@n.BrandName</a></li>
+                    }
+                </ul>
+            </li>
+            <li>
+                <a href="#">Dòng sản phẩm</a>
+                <ul id="sub_menu">
+                    @foreach (var n in @ViewBag.Ctg)
+                    {
+                        <li><a href="/Admin/Home/DSSP?categoryId=@n.CategoryId">@n.CategoryName</a></li>
+                    }
+                </ul>
+            </li>
+            <li><a href="/Admin/User/Index">Danh sách user</a></li>
+        </ul>
+
+
+        <div id="dk">
+            <a href="/User/Logout">Đăng xuất</a>
+        </div>
+        @*<div id="usname">Hello @userName.Value </div>*@
+        <div id="usname">Welcome to Admin page </div>
+
+    </div>
+
+
+
+    <!-- Banner -->
+    <div id="Banner">
+        <figure id="slider" style="margin: 0 0 0rem;">
+            <figure style="margin: 0 0 0rem;">
+                <img src="~/Design/Image//BNLego.jpg" width="100%" height="100%" alt>
+                <div id="TextCenter">Dream World</div>
+            </figure>
+            <figure style="margin: 0 0 0rem;">
+                <img src="~/Design/Image//BNParadise.jpg" width="100%" height="100%" alt>
+
+            </figure>
+            <figure style="margin: 0 0 0rem;">
+                <img src="~/Design/Image//BNGundam.jpg" width="100%" height="100%" alt>
+
+            </figure>
+        </figure>
+
+
+
+        <div id="search">
+            <form action="/Home/DSSP">
+                <input id="search-by-text form-control search" type="search" name="search" value="@ViewBag.Search" placeholder="Nhập thông tin cần tìm..." name="title">
+                <button type="submit" class="but_1 but_da">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- menu-content -->
+    <div id="menu-content">
+        <div id="container">
+            <ul>
+                <li>
+                    <a href="/Admin/Home/Index?search=Figuring">
+                        <span id="icon"><img src="~/Design/Image/Firgure_mnct.png"></img></span><br>
+                        <span id="text-uppercase">Figure</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Admin/Home/Index?search=Gundam">
+                        <span id="icon"><img src="~/Design/Image/Gundam_mnct.png"></img></span><br>
+                        <span id="text-uppercase">Gundam</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Admin/Home/Index?search=Lego">
+                        <span id="icon"><img src="~/Design/Image/Lego_mnct.png"></img></span><br>
+                        <span id="text-uppercase">Lego</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Admin/Home/Index?search=Blind Box">
+                        <span id="icon"><img src="~/Design/Image/Blindbox_mnct.png"></img></span><br>
+                        <span id="text-uppercase">Blind Box</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Banner -->
+
+    <div id="content-1 bg-1">
+        <h2 class="text-center" style="color:black; font-weight:600; padding-top:25px;">Sản phẩm</h2>
+        <div id="container-1" class="d-flex flex-wrap">
+            @*@{
+                int i = 0;
+            }*@
+            @foreach (var item in Model)
+            {
+                //if (i == 6)
+                //{
+                //    break;
+                //}
+                //else
+                //{
+                //    i++;
+                //}
+
+                List<string> imageUrls = new List<string>();
+
+                if (item.Images.Count != 0)
+                {
+                    foreach (var image in item.Images)
+                    {
+                        if (image.Product.ProductID == item.ProductID)
+                        {
+                            imageUrls.Add(image.ImageUrl);
+                        }
+
+
+
+                    }
+                }
+                else
+                {
+                    imageUrls.Add("NoImage.jpg");
+                }
+
+                // Xuất ra mảng
+                string[] imageUrlArray = imageUrls.ToArray();
+
+                <div id="item" class="m-3">
+                    <a href="/Admin/Home/Detail/@item.ProductID">
+
+                        @if (item.Images.Count != 0)
+                        {
+                            <img id="item-img" src="~/ImageSP/@imageUrlArray[0]">
+                            <img id="img_hide" src="~/ImageSP/@imageUrlArray[1]">
+                        }
+                        else
+                        {
+                            <img id="item-img" src="~/ImageSP/@imageUrlArray[0]">
+                            <img id="img_hide" src="~/ImageSP/@imageUrlArray[0]">
+                        }
+
+                    </a>
+                    <div id="caption">
+                        <a id="title-tour" href="/Admin/Home/Detail/@item.ProductID" title="@Html.DisplayFor(model => item.ProductName)">@Html.DisplayFor(model => item.ProductName)</a>
+                    </div>
+                    <div id="money">
+                        <i class="fa-solid fa-money-bill" style="color: black;"></i>
+                        <span>@Html.DisplayFor(model => item.ProductPrice) vnđ</span>
+                        <a href="/Admin/Home/Detail/@item.ProductID" id="btn-dat">Chi tiết</a>
+                    </div>
+                    <div class="btn-group" role="group" aria-label="Basic example" style="width: 100%;">
+                        <a href="/Admin/Home/Delete/@item.ProductID" class="btn btn-danger" style="border-radius: 0 0 0 4px;">
+                            <i class="fas fa-times fa-lg" style="color: white;"></i>
+                        </a>
+                        <a href="/Admin/Home/Edit/@item.ProductID" class="btn btn-primary" style="border-radius: 0 0 4px 0; ">
+                            <i class="fas fa-wrench fa-lg" style="color: white;"></i>
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+        <div>
+            <div colspan="9">
+                @{
+                    int PrevPage = ViewBag.Page - 1;
+                    if (PrevPage <= 0)
+                    {
+                        PrevPage = 1;
+                    }
+
+                    int NextPage = ViewBag.Page + 1;
+                    if (NextPage >= ViewBag.Pages)
+                    {
+                        NextPage = ViewBag.Pages;
+                    }
+
+                }
+                <ul class="pagination justify-content-center">
+                    @{
+                        if (ViewBag.Page == 1)
+                        {
+                            <li class="page-item">
+                                <a class="btn disabled" href="#">Prev</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item">
+                                <a class="page-link"  style="color: #33CC99" href="/Admin/Home/Index?page=@PrevPage">Prev</a>
+                            </li>
+                        }
+                    }
+
+                    @for (int i = 0; i < ViewBag.Pages; i++)
+                    {
+                        if ((i + 1) == ViewBag.Page)
+                        {
+                            <li class="page-item active">
+                                <a class="page-link" href="/Admin/Home/Index?page=@(i+1)">@(i + 1)</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item">
+                                <a class="page-link"  style="color: #33CC99" href="/Admin/Home/Index?page=@(i+1)">@(i + 1)</a>
+                            </li>
+                        }
+                    }
+                    @{
+                        if (ViewBag.Page == ViewBag.Pages)
+                        {
+                            <li class="page-item">
+                                <a class="btn disabled" href="#">Next</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item">
+                                <a class="page-link"  style="color: #33CC99" href="/Admin/Home/Index?page=@NextPage">Next</a>
+                            </li>
+                        }
+                    }
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div id="container-foot">
+            <div id="item-foot" style="width=200px">
+                <ul>
+                    <h3>THƯƠNG HIỆU</h3>
+                    <br>
+                    @foreach (var n in @ViewBag.Br)
+                    {
+                        <li><a href="/Admin/Home/DSSP?brandId=@n.BrandId">@n.BrandName</a></li>
+                    }
+                </ul>
+            </div>
+            <div id="item-foot" style="width=200px">
+                <ul>
+                    <h3>DÒNG SẢN PHẨM</h3>
+                    <br>
+                    @foreach (var n in @ViewBag.Ctg)
+                    {
+                        <li><a href="/Admin/Home/DSSP?categoryId=@n.CategoryId">@n.CategoryName</a></li>
+                    }
+                </ul>
+            </div>
+            <div id="item-foot" style="width: 350px">
+                <ul>
+                    <h3>LIÊN HỆ</h3>
+                    <br>
+                    <li>DREAM WORLD</li>
+                    <li>Trụ sở: 70 Lý Tự Trọng, P. Bến Thành, Quận 1, TP. Hồ Chí Minh</li>
+                    <li>Tel: 028.0512 2023</li>
+                    <li>Email: <a>lienhe@@DreamWorld.com</a></li>
+                    <li>Tổng Đài: 1900 6668</li>
+                </ul>
+            </div>
+            <div id="item-foot" style="margin-left:20px; width:350px;">
+                <ul>
+                    <h3>GIỚI THIỆU</h3>
+                    <br>
+                    <li>Công ty cổ phần DREAM WORLD - Số ĐKKD: 0309132354 do sở kế hoạch và đầu tư cấp ngày 14/07/09 - Là đối tác phân phối chính thức các thương hiệu đồ chơi nổi tiếng trên khắp thế giới tại thị trường Việt Nam.</li>
+                </ul>
+                <img src="~/Design/Image/Bocongthuong.png" style="padding-left:20px;">
+            </div>
+        </div>
+        <div id="title-end">Copyright @@ 2023 DreamWorld - Designed by HUIT Student</div>
+    </footer>
+
+</body>
+</html>

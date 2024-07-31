@@ -1,0 +1,149 @@
+﻿@model  ToyShop.Models.User
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<style>
+    .content {
+        position: relative;
+        background-image: url("https://images3.alphacoders.com/218/218487.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 800px;
+        width: 100%;
+    }
+
+    .login-container {
+        position: absolute;
+        top: 15%;
+        left: 30%;
+    }
+
+    .content form {
+        background-color: rgb(182, 176, 176);
+        opacity: 0.9;
+        border: 1px solid white;
+        padding: 20px;
+        border-radius: 20px;
+        width: 600px;
+        height: auto;
+        transition: 0.8s ease;
+    }
+
+    .login-container form:hover {
+        /*transform: translateY(-20px);*/
+        box-shadow: 0px 0px 20px 10px #33CC99;
+    }
+
+    .content .login-container .title {
+        text-align: center;
+        font-family: Black Ops One;
+        font-size: 35px;
+        /* font-weight: 700;*/
+        margin: 20px 0px;
+        transition: 0.8s ease;
+    }
+
+    form:hover .title {
+        transform: translateY(-10px);
+        -webkit-text-stroke: 1px #33CC99;
+        text-shadow: 6px 6px 5px black;
+    }
+
+    label {
+        font-size: 20px;
+        font-weight: 500;
+        margin: 5px;
+    }
+
+    .content input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: 0.5s;
+    }
+
+        .content input:hover {
+            box-shadow: 0px 0px 10px 2px #33CC99;
+            ;
+        }
+
+    .sel {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: 0.5s;
+    }
+
+        .sel:hover {
+            box-shadow: 0px 0px 10px 2px #33CC99;
+        }
+
+    button {
+        background-color: #33CC99;
+        color: white;
+        padding: 7px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: 1s;
+    }
+
+        button:hover {
+            background-color: #009463;
+            /*box-shadow: 0px 0px 10px 2px black;*/
+        }
+</style>
+
+<div class="content">
+    <div class="login-container">
+        @using (Html.BeginForm("Register", "User", FormMethod.Post))
+        {
+            <div class="title">Đăng ký</div>
+            <input type="hidden" name="role" value="user"/>
+            <div class="row">
+                <div>
+                    <label for="UserName">Tên đăng nhập</label>
+                    @Html.TextBoxFor(row => row.UserName, new { placeholder = "Tên đăng nhập" })
+                    @Html.ValidationMessageFor(row => row.UserName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div>
+                    <label for="Password">Mật khẩu</label>
+                    @Html.TextBoxFor(row => row.Password, new { placeholder = "Mật khẩu", type = "password" })
+                    @Html.ValidationMessageFor(row => row.Password, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div>
+                    <label for="Password">Nhập lại mật khẩu</label>
+                    @Html.TextBox("retypePassword", "", new { placeholder = "Mật khẩu", type = "password" })
+                    @Html.ValidationMessage("retypePassword", "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div>
+                    <label for="EmailAddress">Email</label>
+                    @Html.TextBoxFor(row => row.EmailAddress, new { placeholder = "Email"})
+                    @Html.ValidationMessageFor(row => row.EmailAddress, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br />
+            <button type="submit">Đăng ký</button>
+            <a href="/User/Login" class="btn btn-danger">Trở về đăng nhập</a>
+        }
+    </div>
+</div>
+

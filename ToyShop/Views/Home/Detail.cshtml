@@ -1,0 +1,105 @@
+﻿@model  ToyShop.Models.Product
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<img src="~/Design/Image/Paradise.jpg" id="img_sp">
+<br />
+<div style="background-color: #33CC99; color: white; padding:10px;" ><a href="/Home/Index" style="color: white;">Trang chủ</a> / <a href="/Home/DSSP?brandId=@ViewBag.Bra.BrandId" style="color: white;">@ViewBag.Bra.BrandName </a> / @Html.DisplayFor(model => model.ProductName)</div>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Phần 1: Chiếm 3 phần -->
+        <div class="col-md-5">
+
+            @{
+                List<string> imageUrls = new List<string>();
+
+                if (Model.Images.Count != 0)
+                {
+                    foreach (var image in Model.Images)
+                    {
+                        if (image.Product.ProductID == Model.ProductID)
+                        {
+                            imageUrls.Add(image.ImageUrl);
+                        }
+
+
+
+                    }
+                }
+                else
+                {
+                    imageUrls.Add("NoImage.jpg");
+                }
+
+                // Xuất ra mảng
+                string[] imageUrlArray = imageUrls.ToArray();
+            }
+
+            <!-- Đoạn mã carousel Bootstrap -->
+            <div id="carouselExampleRide" class="carousel slide" data-bs-ride="true">
+                <div class="carousel-inner" style="max-height:610px;">
+                    @if (Model.Images.Count != 0)
+                    {
+                        <div class="carousel-item active">
+                            <img src="~/ImageSP/@imageUrlArray[0]" class="d-block w-100">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="~/ImageSP/@imageUrlArray[1]" class="d-block w-100">
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="carousel-item active">
+                            <img src="~/ImageSP/@imageUrlArray[0]" class="d-block w-100">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="~/ImageSP/@imageUrlArray[0]" class="d-block w-100">
+                        </div>
+                    }
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+
+            <!-- Kết thúc đoạn mã carousel Bootstrap -->
+        </div>
+
+        <!-- Phần 2: Chiếm 7 phần -->
+        <div class="col-md-7">
+
+            <div class="card" style="margin-top:40px;">
+                <div class="card-body">
+                    <h5 class="card-title" style="color:#a40606">@Html.DisplayFor(model => model.ProductName)</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Giá:</strong> @Html.DisplayFor(model => model.ProductPrice) đ</li>
+                        <li class="list-group-item"><strong>Loại:</strong> @ViewBag.Ctgo.CategoryName</li>
+                        <li class="list-group-item"><strong>Hãng:</strong> <a href="/Home/DSSP?brandId=@ViewBag.Bra.BrandId">@ViewBag.Bra.BrandName</a></li>
+                        <li class="list-group-item"><strong>Mô tả:</strong> @Html.DisplayFor(model => model.ProductDescription)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 40px; max-width:400px">
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong><i class="fas fa-magnifying-glass-dollar fa-lg" style="color: #000000;"></i></strong> &nbsp&nbspHàng chính hãng</li>
+                        <li class="list-group-item"><strong><i class="fas fa-regular fa-truck-fast fa-lg" style="color: #000000;"></i></strong> &nbspMiễn phí giao hàng <b>đơn trên 500k</b></li>
+                        <li class="list-group-item"><strong><i class="fas fa-phone fa-lg" style="color: #000000;"></i></strong> &nbsp&nbspLiên hệ hỗ trợ: 1900.1008</li>
+                    </ul>
+                </div>
+            </div>
+
+            <a href="/Card/Add/@Model.ProductID" class="btn btn-success" style="margin-top:20px">Mua ngay</a>
+        </div>
+
+    </div>
+</div>
+

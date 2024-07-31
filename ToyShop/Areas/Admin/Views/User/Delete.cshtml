@@ -1,0 +1,23 @@
+﻿@model ToyShop.Models.User
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<div class="container" style="height:400px; padding-top:30px;">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <h2 style="color:red;">Bạn có chắc chắn muốn xóa @Model.UserName này chưa</h2>
+            <br />
+            <div>
+                @using (Html.BeginForm("Deleted", "User", new { area = "Admin", id = Model.UserId }, FormMethod.Post))
+                {
+                    <button type="submit" class="btn btn-danger">Chắc</button>
+                    <a href="@Url.Action("Index")" class="btn btn-secondary">Chưa</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+

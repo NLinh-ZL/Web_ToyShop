@@ -1,0 +1,116 @@
+﻿@model List<ToyShop.Models.User>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<img src="~/Design/Image/Paradise.jpg" id="img_sp">
+
+<div class="container-fluid" style="height:500px;">
+    <div class="row"style="height:500px">
+        <!-- Navbar chiếm 3 phần -->
+        <nav class="col-md-2 bg-dark" style="padding:20px;">
+            <!-- Nội dung của Navbar -->
+
+            <div class="mr-3" style=" color: white; padding-left: 10px; font-family: Black Ops One; font-size: 30px;">
+                Users
+            </div>
+
+            <div class="btn-group" role="group" aria-label="Basic example" style="margin-top: 10px; width: 200px;">
+                <a href="/Admin/User/Add" class="btn btn-success">Thêm User</a>
+            </div>
+        </nav>
+        <!-- Nội dung chiếm 9 phần -->
+        <div class="col-md-10 content" style="padding:20px;">
+            <!-- Nội dung của trang web -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">UserId</th>
+                        <th scope="col">UserName</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.UserId</td>
+                            <td>@item.UserName</td>
+                            <td>@item.EmailAddress</td>
+                            <td>@item.Role</td>
+                            <td><a class="btn btn-danger" href="@Url.Action("Delete", "User", new { area = "Admin", id = item.UserId })">Xóa</a>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div>
+                <div colspan="9">
+                    @{
+                        int PrevPage = ViewBag.Page - 1;
+                        if (PrevPage <= 0)
+                        {
+                            PrevPage = 1;
+                        }
+
+                        int NextPage = ViewBag.Page + 1;
+                        if (NextPage >= ViewBag.Pages)
+                        {
+                            NextPage = ViewBag.Pages;
+                        }
+
+                    }
+                    <ul class="pagination justify-content-center">
+                        @{
+                            if (ViewBag.Page == 1)
+                            {
+                                <li class="page-item">
+                                    <a class="btn disabled" href="#">Prev</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" style="color: #33CC99" href="/Admin/User/Index?page=@PrevPage">Prev</a>
+                                </li>
+                            }
+                        }
+
+                        @for (int i = 0; i < ViewBag.Pages; i++)
+                        {
+                            if ((i + 1) == ViewBag.Page)
+                            {
+                                <li class="page-item active">
+                                    <a class="page-link" href="/Admin/User/Index?page=@(i+1)">@(i + 1)</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" style="color: #33CC99" href="/Admin/User/Index?page=@(i+1)">@(i + 1)</a>
+                                </li>
+                            }
+                        }
+                        @{
+                            if (ViewBag.Page == ViewBag.Pages)
+                            {
+                                <li class="page-item">
+                                    <a class="btn disabled" href="#">Next</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" style="color: #33CC99" href="/Admin/User/Index?page=@NextPage">Next</a>
+                                </li>
+                            }
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

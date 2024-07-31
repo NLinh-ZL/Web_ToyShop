@@ -1,0 +1,209 @@
+﻿@model List<ToyShop.Models.Product>
+@{
+    ViewBag.Title = "DSSP";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+<!-- Java để chọn + submit -->
+<script>
+    $(function () {
+        $('#SortColumn').change(function () {
+            $('#myform').submit();
+        });
+    })
+</script>
+
+<!-- ===================================================================================================== -->
+<img src="~/Design/Image/Paradise.jpg" id="img_sp">
+@{
+    string tc = "ALL";
+}
+<div style="background-color: #33CC99; color: white; padding:10px;">
+    <a href="/Home/Index" style="color: white;">Trang chủ</a> /
+    @if (ViewBag.SelectedBrand != null)
+    {
+        @ViewBag.SelectedBrand
+    }
+    else if (ViewBag.SelectedCategory != null)
+    {
+        @ViewBag.SelectedCategory
+    }
+    else if (ViewBag.SelectedCategory == null && ViewBag.SelectedBrand == null)
+    {
+        @tc;
+    }
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Navbar chiếm 3 phần -->
+        <nav class="col-md-2 bg-dark" style="padding:20px;">
+            <!-- Nội dung của Navbar -->
+
+            <div class="mr-3" style=" color: white; padding-left: 10px; font-family: Black Ops One; font-size: 30px;">
+                @if (ViewBag.SelectedBrand != null)
+                {
+                    @ViewBag.SelectedBrand
+                }
+                else if (ViewBag.SelectedCategory != null)
+                {
+                    @ViewBag.SelectedCategory
+                }
+                else if (ViewBag.SelectedCategory == null && ViewBag.SelectedBrand == null)
+                {
+                    @tc;
+                }
+            </div>
+
+            <div class="btn-group" role="group" aria-label="Basic example" style="margin-top:10px; width:200px;">
+                <a href="/Home/DSSP" class="btn btn-primary">Tất cả sản phẩm</a>
+            </div>
+        </nav>
+        <!-- Nội dung chiếm 9 phần -->
+        <div class="col-md-10 content">
+            <!-- Nội dung của trang web -->
+            <div class="d-flex align-items-center justify-content-between" style="position: relative; padding-top:10px;">
+                <h2 class="text-dark mr-3"">
+                </h2>
+
+                @using (Html.BeginForm("DSSP", "Home", FormMethod.Get, new { id = "myform", @class = "ml-auto" }))
+                {
+                    <div class="form-group mb-0">
+                        @Html.DropDownList("SortColumn", new SelectList(new List<SelectListItem>
+                        {
+                            new SelectListItem{Text = "Sắp xếp theo giá tăng",Value="PriceUp"},
+                            new SelectListItem{Text = "Sắp xếp theo giá giảm",Value="PriceDown"},
+                            new SelectListItem{Text = "Sắp xếp từ A-Z",Value="A-Z"},
+                            new SelectListItem{Text = "Sắp xếp từ Z-A",Value="Z-A"}
+                        }, "Value", "Text"), "Chọn cách sắp xếp", new { @class = "form-control" })
+
+                        @Html.Hidden("brandId", (long?)ViewBag.SelectedBrandId)
+                        @Html.Hidden("categoryId", (long?)ViewBag.SelectedCategoryId)
+                    </div>
+                }
+            </div>
+            <div id="container-1" class="d-flex flex-wrap">
+                @foreach (var item in Model)
+                {
+                    //if (i == 6)
+                    //{
+                    //    break;
+                    //}
+                    //else
+                    //{
+                    //    i++;
+                    //}
+
+                    List<string> imageUrls = new List<string>();
+
+                    if (item.Images.Count != 0)
+                    {
+                        foreach (var image in item.Images)
+                        {
+                            if (image.Product.ProductID == item.ProductID)
+                            {
+                                imageUrls.Add(image.ImageUrl);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        imageUrls.Add("NoImage.jpg");
+                    }
+
+                    // Xuất ra mảng
+                    string[] imageUrlArray = imageUrls.ToArray();
+
+                    <div id="item" class="m-3">
+                        <a href="/Home/Detail/@item.ProductID">
+
+                            @if (item.Images.Count != 0)
+                            {
+                                <img id="item-img" src="~/ImageSP/@imageUrlArray[0]">
+                                <img id="img_hide" src="~/ImageSP/@imageUrlArray[1]">
+                            }
+                            else
+                            {
+                                <img id="item-img" src="~/ImageSP/@imageUrlArray[0]">
+                                <img id="img_hide" src="~/ImageSP/@imageUrlArray[0]">
+                            }
+
+                        </a>
+                        <div id="caption">
+                            <a id="title-tour" href="/Home/Detail/@item.ProductID" title="@Html.DisplayFor(model => item.ProductName)">@Html.DisplayFor(model => item.ProductName)</a>
+                        </div>
+                        <div id="money">
+                            <i class="fa-solid fa-money-bill" style="color: black;"></i>
+                            <span>@Html.DisplayFor(model => item.ProductPrice) vnđ</span>
+                            <a href="/Card/Add/@item.ProductID" id="btn-dat">MUA NGAY</a>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div>
+                <div colspan="9">
+                    @{
+                        int PrevPage = ViewBag.Page - 1;
+                        if (PrevPage <= 0)
+                        {
+                            PrevPage = 1;
+                        }
+
+                        int NextPage = ViewBag.Page + 1;
+                        if (NextPage >= ViewBag.Pages)
+                        {
+                            NextPage = ViewBag.Pages;
+                        }
+
+                    }
+                    <ul class="pagination justify-content-center">
+                        @{
+                            if (ViewBag.Page == 1)
+                            {
+                                <li class="page-item">
+                                    <a class="btn disabled" href="#">Prev</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" style="color: #33CC99" href="/Home/DSSP?page=@PrevPage">Prev</a>
+                                </li>
+                            }
+                        }
+
+                        @for (int i = 0; i < ViewBag.Pages; i++)
+                        {
+                            if ((i + 1) == ViewBag.Page)
+                            {
+                                <li class="page-item active">
+                                    <a class="page-link" href="/Home/DSSP?page=@(i+1)">@(i + 1)</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" style="color: #33CC99" href="/Home/DSSP?page=@(i+1)">@(i + 1)</a>
+                                </li>
+                            }
+                        }
+                        @{
+                            if (ViewBag.Page == ViewBag.Pages)
+                            {
+                                <li class="page-item">
+                                    <a class="btn disabled" href="#">Next</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" style="color: #33CC99" href="/Home/DSSP?page=@NextPage">Next</a>
+                                </li>
+                            }
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="~/Design/content.css" rel="stylesheet" />
+    <link href="" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Design/fontawesome-free-6.4.0-web/fontawesome-free-6.4.0-web/css/all.min.css"><!--thư viện icon -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js" integrity="sha512-WMEKGZ7L5LWgaPeJtw9MBM4i5w5OSBlSjTjCtSnvFJGSVD26gE5+Td12qN5pvWXhuWaWcVwF++F7aqu9cvqP0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js" integrity="sha512-xq+Vm8jC94ynOikewaQXMEkJIOBp7iArs3IhFWSWdRT3Pq8wFz46p+ZDFAR7kHnSFf+zUv52B3prRYnbDRdgog==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</head>
+
+<!-- java header khi kéo xuống -->
+<script src="https://code.jquery.com/jquery-3.6.4.js"></script>
+<script>
+    $(document).ready(function () {
+        $(window).scroll(function () {
+            if ($(this).scrollTop()) {
+                $('#nav-menu').addClass('sticky');
+            } else {
+                $('#nav-menu').removeClass('sticky');
+            }
+        })
+    })
+</script>
+<!-- java header khi kéo xuống của nút lên đầu -->
+<script>
+    $(document).ready(function () {
+        $('#top').hide(); // Ẩn phần tử khi trang được tải lần đầu
+
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 300) { // Điều kiện có thể thay đổi tùy thuộc vào vị trí muốn hiển thị #top
+                $('#top').fadeIn();
+            }
+            else {
+                $('#top').fadeOut();
+            }
+        });
+    });
+</script>
+
+@{
+    var userName = Context.Request.Cookies["auth"];
+    var Role = Context.Request.Cookies["role"];
+}
+
+<body>
+    <a href="#T">
+        <i id="top" class="fa-solid fa-chevron-down fa-rotate-180 fa-2xl" style="color: white;"></i>
+    </a>
+
+    <!-- Menu -->
+    <h2 id="T" style="margin-bottom: 0;"></h2>
+    <div id="nav-menu">
+        <a href="/Admin/Home/Index">
+            <img src="~/Design/Image/Logo.png">
+        </a>
+        <ul id="font-nav-menu">
+            <li><a href="/Admin/Home/Index">Trang chủ</a></li>
+            <li>
+                <a href="#">Thương hiệu</a>
+                <ul id="sub_menu">
+                    @foreach (var n in @ViewBag.Br)
+                    {
+                        <li><a href="/Admin/Home/DSSP?brandId=@n.BrandId">@n.BrandName</a></li>
+                    }
+                </ul>
+            </li>
+            <li>
+                <a href="#">Dòng sản phẩm</a>
+                <ul id="sub_menu">
+                    @foreach (var n in @ViewBag.Ctg)
+                    {
+                        <li><a href="/Admin/Home/DSSP?categoryId=@n.CategoryId">@n.CategoryName</a></li>
+                    }
+                </ul>
+            </li>
+            <li><a href="/Admin/User/Index">Danh sách user</a></li>
+        </ul>
+
+        <form action="/Admin/Home/DSSP">
+            <div id="searchnb">
+                <div>
+                    <input type="search" type="search" name="search" value="@ViewBag.Search" placeholder="Search . . ." required>
+                </div>
+            </div>
+        </form>
+
+
+        <div id="dk">
+            <a href="/User/Logout">Đăng xuất</a>
+        </div>
+        @*<div id="usname">Hello @userName.Value </div>*@
+        <div id="usname">Welcome to Admin page </div>
+    </div>
+
+    <div>
+        @RenderBody()
+    </div>
+
+    <footer>
+        <div id="container-foot">
+            <div id="item-foot" style="width=200px">
+                <ul>
+                    <h3>THƯƠNG HIỆU</h3>
+                    <br>
+                    @foreach (var n in @ViewBag.Br)
+                    {
+                        <li><a href="/Admin/Home/DSSP?brandId=@n.BrandId">@n.BrandName</a></li>
+                    }
+                </ul>
+            </div>
+            <div id="item-foot" style="width=200px">
+                <ul>
+                    <h3>DÒNG SẢN PHẨM</h3>
+                    <br>
+                    @foreach (var n in @ViewBag.Ctg)
+                    {
+                        <li><a href="/Admin/Home/DSSP?categoryId=@n.CategoryId">@n.CategoryName</a></li>
+                    }
+                </ul>
+            </div>
+            <div id="item-foot" style="width: 350px">
+                <ul>
+                    <h3>LIÊN HỆ</h3>
+                    <br>
+                    <li>DREAM WORLD</li>
+                    <li>Trụ sở: 70 Lý Tự Trọng, P. Bến Thành, Quận 1, TP. Hồ Chí Minh</li>
+                    <li>Tel: 028.0512 2023</li>
+                    <li>Email: <a>lienhe@@DreamWorld.com</a></li>
+                    <li>Tổng Đài: 1900 6668</li>
+                </ul>
+            </div>
+            <div id="item-foot" style="margin-left:20px; width:350px;">
+                <ul>
+                    <h3>GIỚI THIỆU</h3>
+                    <br>
+                    <li>Công ty cổ phần DREAM WORLD - Số ĐKKD: 0309132354 do sở kế hoạch và đầu tư cấp ngày 14/07/09 - Là đối tác phân phối chính thức các thương hiệu đồ chơi nổi tiếng trên khắp thế giới tại thị trường Việt Nam.</li>
+                </ul>
+                <img src="~/Design/Image/Bocongthuong.png" style="padding-left:20px;">
+            </div>
+        </div>
+        <div id="title-end">Copyright @@ 2023 DreamWorld - Designed by HUIT Student</div>
+    </footer>
+
+</body>
+</html>
+
